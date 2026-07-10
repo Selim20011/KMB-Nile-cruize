@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import {
-  Anchor, Cake, Heart,
+  Anchor, Cake, Heart, Camera,
   Ship, UserCheck, Sparkles, Music, Utensils, Lock, ShieldCheck, Phone,
   MapPin, Quote, ChevronDown, MessageCircle, Instagram, Facebook, Mail,
   Calendar,
@@ -19,12 +19,6 @@ import v5 from "@/assets/kmb/cruise5.mp4";
 const videos = [v1, v2, v3, v4, v5];
 
 export const Route = createFileRoute("/")({ component: Home });
-
-/* ---------- utilities ---------- */
-const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] } },
-};
 
 function Reveal({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
   return (
