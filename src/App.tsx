@@ -333,17 +333,16 @@ function VideoShowcase() {
 
         <Reveal delay={0.2}>
           <div className="mt-16 relative aspect-[16/10] md:aspect-[21/9] rounded-xl overflow-hidden bg-black shadow-luxe border border-gold/20 glow-gold">
-            <AnimatePresence mode="wait">
-              <motion.video
-                key={active}
-                initial={{ opacity: 0, scale: 1.05 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }}
-                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                autoPlay muted loop playsInline preload="auto"
-                className="absolute inset-0 h-full w-full object-cover"
-              >
-                <source src={videos[active]} type="video/mp4" />
-              </motion.video>
-            </AnimatePresence>
+            <motion.video
+              key={active}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4 }}
+              autoPlay muted loop playsInline preload="auto"
+              className="absolute inset-0 h-full w-full object-cover"
+            >
+              <source src={`${videos[active]}#t=0.001`} type="video/mp4" />
+            </motion.video>
             <div className="absolute inset-0 ring-1 ring-inset ring-gold/20 pointer-events-none" />
           </div>
         </Reveal>
@@ -354,8 +353,8 @@ function VideoShowcase() {
               key={i} onClick={() => setActive(i)}
               className={`group relative aspect-video overflow-hidden rounded-sm transition-all ${active === i ? "ring-1 ring-gold" : "opacity-50 hover:opacity-100"}`}
             >
-              <video muted loop playsInline preload="none" className="h-full w-full object-cover" onMouseEnter={e => e.currentTarget.play()} onMouseLeave={e => e.currentTarget.pause()}>
-                <source src={src} type="video/mp4" />
+              <video muted loop playsInline preload="metadata" className="h-full w-full object-cover" onMouseEnter={e => e.currentTarget.play()} onMouseLeave={e => e.currentTarget.pause()}>
+                <source src={`${src}#t=0.001`} type="video/mp4" />
               </video>
             </button>
           ))}
@@ -400,12 +399,12 @@ function Gallery() {
                   <img src={it.src} alt="KMB Marine gallery" className="h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-110" />
                 ) : (
                   <video
-                    muted loop playsInline preload="none"
+                    muted loop playsInline preload="metadata"
                     className="h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-110"
                     onMouseEnter={e => e.currentTarget.play()}
                     onMouseLeave={e => { e.currentTarget.pause(); e.currentTarget.currentTime = 0; }}
                   >
-                    <source src={it.src} type="video/mp4" />
+                    <source src={`${it.src}#t=0.001`} type="video/mp4" />
                   </video>
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
