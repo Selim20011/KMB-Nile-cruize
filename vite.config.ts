@@ -12,4 +12,9 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  nitro: {
+    // Override the default cloudflare-module preset to use Vercel's SSR adapter.
+    // This ensures Vercel can execute the server bundle and serve CSS, JS assets correctly.
+    preset: "vercel",
+  },
 });
