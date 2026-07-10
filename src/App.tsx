@@ -23,7 +23,7 @@ function Reveal({ children, delay = 0, className = "" }: { children: React.React
       className={`${className} transform-gpu`}
       initial="hidden"
       whileInView="show"
-      viewport={{ once: true, margin: "-80px" }}
+      viewport={{ once: true, margin: "-10px" }}
       variants={{
         hidden: { opacity: 0, y: 40 },
         show: { opacity: 1, y: 0, transition: { duration: 0.9, delay, ease: [0.22, 1, 0.36, 1] } },
@@ -188,7 +188,7 @@ function About() {
           <div className="relative group p-4">
             <div className="absolute inset-0 rounded-2xl border border-gold/25 translate-x-4 translate-y-4 -z-10 transition-transform duration-700 group-hover:translate-x-2 group-hover:translate-y-2" />
             <div className="relative aspect-[4/5] overflow-hidden rounded-xl shadow-2xl">
-              <img src={birthday} alt="KMB luxury cruise interior at night" loading="lazy" className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105" />
+              <img src={birthday} alt="KMB luxury cruise interior at night" className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105" />
               <div className="absolute inset-0 bg-navy-deep/20 transition-all duration-500 group-hover:bg-transparent" />
               <div className="absolute inset-0 ring-1 ring-inset ring-gold/20" />
             </div>
@@ -397,7 +397,7 @@ function Gallery() {
             <Reveal key={i} delay={i * 0.06} className={it.span}>
               <div className="group relative h-full w-full overflow-hidden rounded-sm bg-navy-deep">
                 {it.type === "image" ? (
-                  <img src={it.src} alt="KMB Marine gallery" loading="lazy" className="h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-110" />
+                  <img src={it.src} alt="KMB Marine gallery" className="h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-110" />
                 ) : (
                   <video
                     muted loop playsInline preload="none"
