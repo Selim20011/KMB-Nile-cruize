@@ -1,21 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import {
-  Anchor, Cake, Heart, Wine, Briefcase, Users, Camera, Sunset,
+  Anchor, Cake, Heart,
   Ship, UserCheck, Sparkles, Music, Utensils, Lock, ShieldCheck, Phone,
   MapPin, Quote, ChevronDown, MessageCircle, Instagram, Facebook, Mail,
+  Calendar,
 } from "lucide-react";
 
-import logo from "@/assets/kmb/logo.jpeg.asset.json";
-import birthday from "@/assets/kmb/birthday.jpeg.asset.json";
-import v1 from "@/assets/kmb/cruise1.mp4.asset.json";
-import v2 from "@/assets/kmb/cruise2.mp4.asset.json";
-import v3 from "@/assets/kmb/cruise3.mp4.asset.json";
-import v4 from "@/assets/kmb/cruise4.mp4.asset.json";
-import v5 from "@/assets/kmb/cruise5.mp4.asset.json";
+import logo from "@/assets/kmb/logo.jpeg";
+import birthday from "@/assets/kmb/birthday.jpeg";
+import v1 from "@/assets/kmb/cruise1.mp4";
+import v2 from "@/assets/kmb/cruise2.mp4";
+import v3 from "@/assets/kmb/cruise3.mp4";
+import v4 from "@/assets/kmb/cruise4.mp4";
+import v5 from "@/assets/kmb/cruise5.mp4";
 
-const videos = [v1.url, v2.url, v3.url, v4.url, v5.url];
+const videos = [v1, v2, v3, v4, v5];
 
 export const Route = createFileRoute("/")({ component: Home });
 
@@ -44,9 +45,9 @@ function Reveal({ children, delay = 0, className = "" }: { children: React.React
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex items-center gap-4 text-gold">
-      <div className="h-px w-10 bg-gold" />
-      <span className="text-[11px] uppercase tracking-[0.4em] font-medium">{children}</span>
+    <div className="flex items-center gap-3 text-gold">
+      <div className="h-px w-12 bg-gradient-to-r from-gold to-transparent" />
+      <span className="text-[10px] uppercase tracking-[0.35em] font-semibold">{children}</span>
     </div>
   );
 }
@@ -54,6 +55,7 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 /* ---------- Nav ---------- */
 function Nav() {
   const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 40);
     on();
@@ -61,34 +63,63 @@ function Nav() {
     return () => window.removeEventListener("scroll", on);
   }, []);
   const links = [
-    ["About", "#about"], ["Experiences", "#experiences"], ["Gallery", "#gallery"],
+    ["About", "#about"], ["Services", "#services"], ["Gallery", "#gallery"],
     ["Locations", "#locations"], ["Contact", "#contact"],
   ];
   return (
     <motion.header
       initial={{ y: -40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 1, delay: 0.2 }}
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${scrolled ? "py-3" : "py-6"}`}
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${scrolled ? "py-2" : "py-5"}`}
     >
-      <div className={`mx-auto max-w-7xl px-6 lg:px-10 transition-all duration-500 ${scrolled ? "" : ""}`}>
-        <div className={`flex items-center justify-between rounded-full px-4 sm:px-6 py-3 transition-all duration-500 ${scrolled ? "glass" : ""}`}>
+      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+        <div className={`flex items-center justify-between rounded-2xl px-4 sm:px-6 py-3 transition-all duration-500 ${scrolled ? "glass shadow-luxe" : ""}`}>
           <a href="#top" className="flex items-center gap-3 group">
-            <img src={logo.url} alt="KMB Marine" className="h-10 w-10 rounded-full object-cover ring-1 ring-gold/40" />
+            <div className="relative">
+              <img src={logo} alt="KMB Marine" className="h-10 w-10 rounded-full object-cover ring-1 ring-gold/40 group-hover:ring-gold transition-all duration-300" />
+              <div className="absolute inset-0 rounded-full bg-gold/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </div>
             <div className="leading-tight">
-              <div className="font-display text-lg text-ivory tracking-wide">KMB Marine</div>
-              <div className="text-[9px] uppercase tracking-[0.35em] text-gold/80">Egypt Nile Cruise</div>
+              <div className="font-display text-lg text-ivory tracking-wide group-hover:text-gold transition-colors duration-300">KMB Marine</div>
+              <div className="text-[9px] uppercase tracking-[0.35em] text-gold/70">Egypt Nile Cruise</div>
             </div>
           </a>
           <nav className="hidden md:flex items-center gap-8">
             {links.map(([label, href]) => (
-              <a key={href} href={href} className="text-xs uppercase tracking-[0.25em] text-ivory/80 hover:text-gold transition-colors">
+              <a key={href} href={href} className="relative text-xs uppercase tracking-[0.25em] text-ivory/75 hover:text-gold transition-colors duration-300 group">
                 {label}
+                <span className="absolute -bottom-1 left-0 h-px w-0 bg-gold transition-all duration-300 group-hover:w-full" />
               </a>
             ))}
           </nav>
-          <a href="#contact" className="hidden sm:inline-flex items-center gap-2 rounded-full border border-gold/50 px-5 py-2 text-[11px] uppercase tracking-[0.3em] text-gold hover:bg-gold hover:text-navy-deep transition-all">
-            Reserve
-          </a>
+          <div className="flex items-center gap-3">
+            <a href="#contact" className="hidden sm:inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-gold/90 to-gold px-6 py-2.5 text-[10px] uppercase tracking-[0.3em] text-navy-deep font-bold hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] hover:scale-[1.03] transition-all duration-300">
+              Reserve
+            </a>
+            <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden flex flex-col gap-1.5 p-2" aria-label="Menu">
+              <span className={`block h-px w-6 bg-ivory transition-all duration-300 ${mobileOpen ? "rotate-45 translate-y-2" : ""}`} />
+              <span className={`block h-px w-4 bg-gold transition-all duration-300 ${mobileOpen ? "opacity-0" : ""}`} />
+              <span className={`block h-px w-6 bg-ivory transition-all duration-300 ${mobileOpen ? "-rotate-45 -translate-y-2" : ""}`} />
+            </button>
+          </div>
         </div>
+        <AnimatePresence>
+          {mobileOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+              className="md:hidden mt-2 glass rounded-2xl px-6 py-6 flex flex-col gap-5"
+            >
+              {links.map(([label, href]) => (
+                <a key={href} href={href} onClick={() => setMobileOpen(false)} className="text-sm uppercase tracking-[0.2em] text-ivory/80 hover:text-gold transition-colors">
+                  {label}
+                </a>
+              ))}
+              <a href="tel:+201155003537" className="mt-2 flex items-center gap-2 text-sm text-gold">
+                <Phone className="w-3.5 h-3.5" /> 01155003537
+              </a>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </motion.header>
   );
@@ -118,8 +149,9 @@ function Hero() {
 
         <motion.h1
           initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-8 font-display text-ivory text-[15vw] sm:text-[10vw] lg:text-[8.5rem] leading-[0.95] tracking-tight text-balance"
+          className="mt-8 font-display text-ivory text-[15vw] sm:text-[10vw] lg:text-[8.5rem] leading-[0.95] tracking-tight text-balance relative"
         >
+          <div className="absolute inset-0 bg-gold/5 blur-[120px] rounded-full -z-10 pointer-events-none" />
           KMB <span className="italic gold-text">Marine</span>
           <br />
           <span className="italic font-light">Cruise</span>
@@ -134,13 +166,13 @@ function Hero() {
 
         <motion.div
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 1.7 }}
-          className="mt-12 flex flex-col sm:flex-row gap-4"
+          className="mt-12 flex flex-col sm:flex-row gap-5"
         >
-          <a href="#contact" className="group relative overflow-hidden rounded-full bg-gold px-8 py-4 text-[11px] uppercase tracking-[0.3em] text-navy-deep font-semibold hover:bg-gold-soft transition-colors">
+          <a href="#contact" className="group relative overflow-hidden rounded-full bg-gradient-to-r from-gold via-gold-soft to-gold px-10 py-5 text-[11px] uppercase tracking-[0.35em] text-navy-deep font-bold hover:shadow-[0_0_30px_rgba(212,175,55,0.35)] hover:scale-[1.03] transition-all duration-500">
             Book Your Cruise
           </a>
-          <a href="#experiences" className="rounded-full border border-ivory/30 px-8 py-4 text-[11px] uppercase tracking-[0.3em] text-ivory hover:border-gold hover:text-gold transition-all">
-            Explore Experiences
+          <a href="#services" className="group relative overflow-hidden rounded-full border border-gold/45 px-10 py-5 text-[11px] uppercase tracking-[0.35em] text-ivory hover:text-navy-deep hover:bg-gold hover:scale-[1.03] transition-all duration-500">
+            Explore Services
           </a>
         </motion.div>
       </motion.div>
@@ -162,11 +194,15 @@ function About() {
     <section id="about" className="relative bg-ivory py-32 md:py-48">
       <div className="mx-auto max-w-7xl px-6 lg:px-10 grid lg:grid-cols-12 gap-16 items-center">
         <Reveal className="lg:col-span-6 order-2 lg:order-1">
-          <div className="relative aspect-[4/5] overflow-hidden rounded-sm">
-            <img src={birthday.url} alt="KMB luxury cruise interior at night" loading="lazy" className="h-full w-full object-cover" />
-            <div className="absolute inset-0 ring-1 ring-inset ring-gold/20" />
+          <div className="relative group p-4">
+            <div className="absolute inset-0 rounded-2xl border border-gold/25 translate-x-4 translate-y-4 -z-10 transition-transform duration-700 group-hover:translate-x-2 group-hover:translate-y-2" />
+            <div className="relative aspect-[4/5] overflow-hidden rounded-xl shadow-2xl">
+              <img src={birthday} alt="KMB luxury cruise interior at night" loading="lazy" className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105" />
+              <div className="absolute inset-0 bg-navy-deep/20 transition-all duration-500 group-hover:bg-transparent" />
+              <div className="absolute inset-0 ring-1 ring-inset ring-gold/20" />
+            </div>
           </div>
-          <div className="mt-6 flex items-center gap-6">
+          <div className="mt-8 flex items-center gap-6">
             <div className="hairline flex-1" />
             <span className="text-[10px] uppercase tracking-[0.4em] text-navy/60">Est · Cairo</span>
           </div>
@@ -205,25 +241,35 @@ function About() {
   );
 }
 
-/* ---------- Experiences ---------- */
-const experiences = [
-  { icon: Ship, title: "Private Cruises", desc: "Full-boat charters tailored to your vision." },
-  { icon: Cake, title: "Birthday Celebrations", desc: "Cinematic staging, bespoke cakes, live entertainment." },
-  { icon: Heart, title: "Engagement Parties", desc: "Intimate reveals framed by the river at dusk." },
-  { icon: Wine, title: "Romantic Dinners", desc: "Two seats, one river, an unforgettable evening." },
-  { icon: Briefcase, title: "Corporate Events", desc: "Elevated hospitality for signature moments." },
-  { icon: Users, title: "Family Gatherings", desc: "Warm, private, effortlessly hosted." },
-  { icon: Camera, title: "Photography Sessions", desc: "A moving set with the Nile as backdrop." },
-  { icon: Sunset, title: "Sunset Cruises", desc: "Golden hour, curated cocktails, calm water." },
+/* ---------- Services ---------- */
+const services = [
+  { 
+    icon: Cake, 
+    title: "Birthdays", 
+    desc: "Cinematic setups on the Nile with customized theme styling, premium cakes, professional photography, and live entertainment.",
+    highlights: ["Custom Theme Decor", "High-fidelity DJ & Audio", "Luxury Catering & Cakes"]
+  },
+  { 
+    icon: Heart, 
+    title: "Wedding Plans", 
+    desc: "Bespoke wedding and engagement planning. Stunning floral setups, high-fidelity sound, and sunset backdrops for your special day.",
+    highlights: ["Sunset Stage Setup", "Florals & Entrance Arches", "Photo & Video Packages"]
+  },
+  { 
+    icon: Calendar, 
+    title: "Annual Events", 
+    desc: "Premium hosting for annual corporate milestones, private family reunions, and signature seasonal celebrations.",
+    highlights: ["Private Chartered Cruising", "Custom Executive Menus", "Tailored Event Schedules"]
+  },
 ];
 
-function Experiences() {
+function Services() {
   return (
-    <section id="experiences" className="relative bg-navy-deep py-32 md:py-48 overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,color-mix(in_oklch,var(--gold)_10%,transparent),transparent_60%)]" />
+    <section id="services" className="relative bg-navy-deep py-32 md:py-48 overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,color-mix(in_oklch,var(--gold)_10%,transparent),transparent_60%)] pointer-events-none" />
       <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
         <div className="max-w-3xl">
-          <Reveal><SectionLabel>Curated Experiences</SectionLabel></Reveal>
+          <Reveal><SectionLabel>Our Services</SectionLabel></Reveal>
           <Reveal delay={0.1}>
             <h2 className="mt-8 font-display text-5xl md:text-7xl text-ivory leading-[1.05] text-balance">
               Every occasion, <span className="italic gold-text">reimagined</span>.
@@ -231,16 +277,32 @@ function Experiences() {
           </Reveal>
         </div>
 
-        <div className="mt-20 grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-gold/10 rounded-sm overflow-hidden">
-          {experiences.map((e, i) => (
-            <Reveal key={e.title} delay={i * 0.05}>
-              <div className="group relative h-full bg-navy-deep p-8 lg:p-10 min-h-[240px] flex flex-col justify-between transition-all duration-500 hover:bg-navy">
-                <e.icon className="w-7 h-7 text-gold transition-transform duration-500 group-hover:scale-110 group-hover:-translate-y-1" strokeWidth={1.2} />
+        <div className="mt-20 grid sm:grid-cols-1 md:grid-cols-3 gap-8">
+          {services.map((s, i) => (
+            <Reveal key={s.title} delay={i * 0.08} className="h-full">
+              <div className="group relative h-full overflow-hidden rounded-2xl border border-gold/15 bg-navy/20 backdrop-blur-md p-8 lg:p-10 min-h-[400px] flex flex-col justify-between transition-all duration-500 hover:border-gold/40 hover:-translate-y-2 hover:shadow-luxe">
+                <div className="absolute inset-0 bg-gradient-to-br from-gold/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                 <div>
-                  <h3 className="font-display text-2xl text-ivory">{e.title}</h3>
-                  <p className="mt-2 text-sm text-ivory/50 font-light leading-relaxed">{e.desc}</p>
+                  <div className="flex h-14 w-14 items-center justify-center rounded-full border border-gold/25 bg-gold/5 transition-all duration-500 group-hover:border-gold group-hover:bg-gold/10 group-hover:shadow-[0_0_20px_rgba(212,175,55,0.15)]">
+                    <s.icon className="w-6 h-6 text-gold transition-transform duration-500 group-hover:scale-110" strokeWidth={1.2} />
+                  </div>
+                  <div className="mt-8">
+                    <h3 className="font-display text-2xl text-ivory tracking-wide">{s.title}</h3>
+                    <p className="mt-3 text-sm text-ivory/55 font-light leading-relaxed">{s.desc}</p>
+                  </div>
+                  <ul className="mt-6 space-y-2.5">
+                    {s.highlights.map((hl) => (
+                      <li key={hl} className="flex items-center gap-2.5 text-xs text-ivory/70 font-light">
+                        <div className="h-1 w-1 rounded-full bg-gold/70" />
+                        <span>{hl}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <div className="absolute bottom-0 left-0 h-px w-0 bg-gold transition-all duration-700 group-hover:w-full" />
+                <div className="mt-8 flex items-center gap-2 text-[10px] uppercase tracking-[0.25em] text-gold/80 transition-colors group-hover:text-gold font-medium">
+                  <span>Inquire Service</span>
+                  <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">→</span>
+                </div>
               </div>
             </Reveal>
           ))}
@@ -279,7 +341,7 @@ function VideoShowcase() {
         </div>
 
         <Reveal delay={0.2}>
-          <div className="mt-16 relative aspect-[16/10] md:aspect-[21/9] rounded-sm overflow-hidden bg-black shadow-luxe">
+          <div className="mt-16 relative aspect-[16/10] md:aspect-[21/9] rounded-xl overflow-hidden bg-black shadow-luxe border border-gold/20 glow-gold">
             <AnimatePresence mode="wait">
               <motion.video
                 key={active}
@@ -315,12 +377,12 @@ function VideoShowcase() {
 /* ---------- Gallery (masonry with hover-play videos + image) ---------- */
 function Gallery() {
   const items = [
-    { type: "video", src: v2.url, span: "row-span-2" },
-    { type: "image", src: birthday.url, span: "" },
-    { type: "video", src: v3.url, span: "" },
-    { type: "video", src: v4.url, span: "row-span-2" },
-    { type: "video", src: v1.url, span: "" },
-    { type: "video", src: v5.url, span: "" },
+    { type: "video", src: v2, span: "row-span-2" },
+    { type: "image", src: birthday, span: "" },
+    { type: "video", src: v3, span: "" },
+    { type: "video", src: v4, span: "row-span-2" },
+    { type: "video", src: v1, span: "" },
+    { type: "video", src: v5, span: "" },
   ];
   return (
     <section id="gallery" className="relative bg-ivory py-32 md:py-48">
@@ -383,22 +445,29 @@ function WhyChoose() {
   return (
     <section className="relative bg-navy-deep py-32 md:py-48 overflow-hidden">
       <div className="absolute inset-0 opacity-[0.04] bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22><path d=%22M0 30h60M30 0v60%22 stroke=%22%23D4AF37%22 stroke-width=%220.5%22/></svg>')]" />
-      <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
-        <div className="text-center max-w-3xl mx-auto">
-          <Reveal><div className="flex justify-center"><SectionLabel>Why KMB</SectionLabel></div></Reveal>
+      <div className="relative mx-auto max-w-7xl px-6 lg:px-10 grid lg:grid-cols-12 gap-16 items-center">
+        <div className="lg:col-span-4">
+          <Reveal><SectionLabel>Why KMB</SectionLabel></Reveal>
           <Reveal delay={0.1}>
-            <h2 className="mt-8 font-display text-5xl md:text-7xl text-ivory leading-[1.05] text-balance">
+            <h2 className="mt-8 font-display text-5xl md:text-6xl text-ivory leading-[1.05] text-balance">
               A standard of <span className="italic gold-text">quiet</span> excellence.
             </h2>
           </Reveal>
+          <Reveal delay={0.2}>
+            <p className="mt-6 text-ivory/60 text-sm leading-relaxed font-light">
+              Crafting unmatched memories afloat the Nile with world-class hospitality, absolute privacy, and meticulous attention to detail.
+            </p>
+          </Reveal>
         </div>
 
-        <div className="mt-24 grid grid-cols-2 md:grid-cols-3 gap-px bg-gold/10">
+        <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-3 gap-5">
           {features.map((f, i) => (
             <Reveal key={f.label} delay={i * 0.04}>
-              <div className="group relative bg-navy-deep p-10 md:p-14 flex flex-col items-center text-center min-h-[220px] justify-center transition-colors duration-500 hover:bg-navy">
-                <f.icon className="w-8 h-8 text-gold transition-all duration-500 group-hover:scale-110" strokeWidth={1.2} />
-                <div className="mt-6 font-display text-xl md:text-2xl text-ivory">{f.label}</div>
+              <div className="group relative bg-navy/20 backdrop-blur-sm border border-gold/10 rounded-xl p-6 md:p-8 flex flex-col items-center text-center min-h-[160px] justify-center transition-all duration-500 hover:border-gold/35 hover:-translate-y-1 hover:shadow-gold/10">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full border border-gold/15 bg-gold/5 transition-all duration-500 group-hover:border-gold group-hover:bg-gold/10">
+                  <f.icon className="w-5 h-5 text-gold transition-all duration-500 group-hover:scale-110" strokeWidth={1.2} />
+                </div>
+                <div className="mt-4 font-display text-base md:text-lg text-ivory tracking-wide">{f.label}</div>
               </div>
             </Reveal>
           ))}
@@ -437,14 +506,15 @@ function Locations() {
         <div className="mt-20 grid md:grid-cols-2 gap-8">
           {branches.map((b, i) => (
             <Reveal key={b.name} delay={i * 0.15}>
-              <div className="group relative bg-navy-deep text-ivory rounded-sm overflow-hidden shadow-luxe">
-                <div className="aspect-[16/10] w-full overflow-hidden bg-navy">
+              <div className="group relative bg-gradient-to-b from-navy to-navy-deep text-ivory rounded-2xl border border-gold/15 overflow-hidden shadow-luxe transition-all duration-500 hover:border-gold/45">
+                <div className="aspect-[16/10] w-full overflow-hidden bg-navy relative">
                   <iframe
                     src={b.map} loading="lazy" title={b.name}
-                    className="h-full w-full grayscale contrast-125 opacity-60 group-hover:opacity-90 group-hover:grayscale-0 transition-all duration-700"
+                    className="h-full w-full grayscale contrast-125 opacity-50 group-hover:opacity-85 group-hover:grayscale-0 transition-all duration-700"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-navy-deep via-transparent to-transparent pointer-events-none" />
                 </div>
-                <div className="p-10">
+                <div className="p-8 md:p-10">
                   <div className="flex items-center gap-3 text-gold">
                     <MapPin className="w-4 h-4" strokeWidth={1.5} />
                     <span className="text-[10px] uppercase tracking-[0.4em]">{b.tag}</span>
@@ -475,33 +545,50 @@ function Testimonials() {
     return () => clearInterval(t);
   }, []);
   return (
-    <section className="relative bg-navy-deep py-32 md:py-48 overflow-hidden">
-      <div className="mx-auto max-w-4xl px-6 lg:px-10 text-center">
-        <Reveal><div className="flex justify-center"><SectionLabel>Voices</SectionLabel></div></Reveal>
-        <div className="mt-16 relative min-h-[280px]">
-          <Quote className="mx-auto w-12 h-12 text-gold" strokeWidth={1} />
+    <section className="relative bg-ivory py-32 md:py-48 overflow-hidden">
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
+      <div className="mx-auto max-w-5xl px-6 lg:px-10">
+        <Reveal><div className="flex justify-center"><SectionLabel>Client Voices</SectionLabel></div></Reveal>
+        <Reveal delay={0.1}>
+          <h2 className="mt-8 font-display text-center text-5xl md:text-6xl text-navy-deep leading-[1.05] text-balance">
+            Words from the <span className="italic gold-text">river</span>.
+          </h2>
+        </Reveal>
+        <div className="mt-20 relative">
+          <div className="flex justify-center mb-8">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full border border-gold/25 bg-gold/5">
+              <Quote className="w-7 h-7 text-gold" strokeWidth={1} />
+            </div>
+          </div>
           <AnimatePresence mode="wait">
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.7 }}
-              className="mt-10"
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="text-center"
             >
-              <p className="font-display text-2xl md:text-4xl text-ivory leading-snug italic text-balance">
+              <p className="font-display text-2xl md:text-4xl text-navy-deep leading-snug italic text-balance max-w-3xl mx-auto">
                 &ldquo;{quotes[i].text}&rdquo;
               </p>
-              <div className="mt-10">
-                <div className="text-gold text-sm tracking-widest">{quotes[i].name}</div>
-                <div className="text-ivory/40 text-xs uppercase tracking-[0.3em] mt-2">{quotes[i].role}</div>
+              <div className="mt-12 flex flex-col items-center gap-3">
+                <div className="h-px w-12 bg-gradient-to-r from-transparent via-gold to-transparent" />
+                <div className="font-display text-navy text-lg tracking-wide">{quotes[i].name}</div>
+                <div className="text-navy/50 text-xs uppercase tracking-[0.35em]">{quotes[i].role}</div>
+                <div className="flex gap-1 mt-1">
+                  {[...Array(5)].map((_, s) => (
+                    <span key={s} className="text-gold text-sm">★</span>
+                  ))}
+                </div>
               </div>
             </motion.div>
           </AnimatePresence>
-        </div>
-        <div className="mt-10 flex justify-center gap-2">
-          {quotes.map((_, idx) => (
-            <button key={idx} onClick={() => setI(idx)}
-              className={`h-px transition-all duration-500 ${i === idx ? "w-12 bg-gold" : "w-6 bg-ivory/20"}`} />
-          ))}
+          <div className="mt-12 flex justify-center gap-3">
+            {quotes.map((_, idx) => (
+              <button key={idx} onClick={() => setI(idx)}
+                className={`transition-all duration-500 rounded-full ${i === idx ? "w-8 h-2 bg-gold" : "w-2 h-2 bg-navy/20 hover:bg-gold/40"}`} />
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -527,12 +614,12 @@ function CTA() {
           <p className="mt-8 max-w-lg text-ivory/70 font-light">Speak with a private cruise concierge — reservations open for the coming season.</p>
         </Reveal>
         <Reveal delay={0.4}>
-          <div className="mt-12 flex flex-col sm:flex-row gap-3">
-            <a href="#" className="rounded-full bg-gold px-8 py-4 text-[11px] uppercase tracking-[0.3em] text-navy-deep font-semibold hover:bg-gold-soft transition-colors">Book Now</a>
-            <a href="tel:+201000000000" className="inline-flex items-center gap-2 rounded-full border border-ivory/30 px-8 py-4 text-[11px] uppercase tracking-[0.3em] text-ivory hover:border-gold hover:text-gold transition-all">
+          <div className="mt-12 flex flex-col sm:flex-row gap-4">
+            <a href="#" className="rounded-full bg-gradient-to-r from-gold via-gold-soft to-gold px-10 py-5 text-[11px] uppercase tracking-[0.3em] text-navy-deep font-bold hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] transition-all duration-500">Book Now</a>
+            <a href="tel:+201155003537" className="inline-flex items-center gap-2.5 rounded-full border border-ivory/30 px-10 py-5 text-[11px] uppercase tracking-[0.3em] text-ivory hover:border-gold hover:text-gold transition-all duration-500">
               <Phone className="w-3.5 h-3.5" /> Call Us
             </a>
-            <a href="https://wa.me/201000000000" className="inline-flex items-center gap-2 rounded-full border border-ivory/30 px-8 py-4 text-[11px] uppercase tracking-[0.3em] text-ivory hover:border-gold hover:text-gold transition-all">
+            <a href="https://wa.me/201155003537" className="inline-flex items-center gap-2.5 rounded-full border border-ivory/30 px-10 py-5 text-[11px] uppercase tracking-[0.3em] text-ivory hover:border-gold hover:text-gold transition-all duration-500">
               <MessageCircle className="w-3.5 h-3.5" /> WhatsApp
             </a>
           </div>
@@ -545,42 +632,69 @@ function CTA() {
 /* ---------- Footer ---------- */
 function Footer() {
   return (
-    <footer className="bg-navy-deep text-ivory border-t border-gold/10">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10 py-24 grid md:grid-cols-4 gap-12">
-        <div className="md:col-span-2">
-          <div className="flex items-center gap-3">
-            <img src={logo.url} alt="KMB" className="h-12 w-12 rounded-full object-cover ring-1 ring-gold/40" />
+    <footer className="bg-navy-deep text-ivory">
+      <div className="h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent" />
+      <div className="mx-auto max-w-7xl px-6 lg:px-10 py-24 grid md:grid-cols-12 gap-12">
+        <div className="md:col-span-5">
+          <div className="flex items-center gap-4">
+            <div className="relative">
+              <img src={logo} alt="KMB" className="h-14 w-14 rounded-full object-cover ring-1 ring-gold/40" />
+              <div className="absolute inset-0 rounded-full bg-gold/5" />
+            </div>
             <div>
-              <div className="font-display text-xl">KMB Marine Cruise</div>
-              <div className="text-[10px] uppercase tracking-[0.35em] text-gold/70">Egypt Nile Cruise</div>
+              <div className="font-display text-2xl tracking-wide">KMB Marine Cruise</div>
+              <div className="text-[9px] uppercase tracking-[0.4em] text-gold/60 mt-1">Egypt Nile Cruise · Est. Cairo</div>
             </div>
           </div>
-          <p className="mt-8 max-w-sm text-ivory/50 font-light leading-relaxed">
-            Private luxury cruises on the Nile — for celebrations that deserve a river.
+          <p className="mt-8 max-w-sm text-ivory/45 font-light leading-relaxed text-sm">
+            Private luxury cruises on the Nile — for celebrations that deserve a river and moments that deserve to be remembered forever.
           </p>
-        </div>
-        <div>
-          <div className="text-[10px] uppercase tracking-[0.35em] text-gold mb-6">Navigate</div>
-          <ul className="space-y-3 text-sm text-ivory/70">
-            {[["About", "#about"], ["Experiences", "#experiences"], ["Gallery", "#gallery"], ["Locations", "#locations"]].map(([l, h]) => (
-              <li key={h}><a href={h} className="hover:text-gold transition-colors">{l}</a></li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <div className="text-[10px] uppercase tracking-[0.35em] text-gold mb-6">Contact</div>
-          <ul className="space-y-3 text-sm text-ivory/70">
-            <li>Maadi · Mamsha Ahl Misr</li>
-            <li><a href="tel:+201000000000" className="hover:text-gold">+20 100 000 0000</a></li>
-            <li><a href="mailto:hello@kmbmarine.com" className="hover:text-gold">hello@kmbmarine.com</a></li>
-          </ul>
           <div className="mt-8 flex gap-3">
-            {[Instagram, Facebook, MessageCircle, Mail].map((Ic, i) => (
-              <a key={i} href="#" className="h-10 w-10 rounded-full border border-ivory/15 flex items-center justify-center hover:border-gold hover:text-gold transition-all">
-                <Ic className="w-4 h-4" strokeWidth={1.5} />
+            {([
+              { Icon: Instagram, label: "Instagram", href: "#" },
+              { Icon: Facebook, label: "Facebook", href: "#" },
+              { Icon: MessageCircle, label: "WhatsApp", href: "https://wa.me/201155003537" },
+              { Icon: Mail, label: "Email", href: "mailto:hello@kmbmarine.com" },
+            ] as { Icon: React.ElementType; label: string; href: string }[]).map(({ Icon, label, href }) => (
+              <a key={label} href={href} aria-label={label}
+                className="h-10 w-10 rounded-full border border-ivory/10 flex items-center justify-center text-ivory/50 hover:border-gold hover:text-gold hover:bg-gold/5 transition-all duration-300">
+                <Icon className="w-4 h-4" strokeWidth={1.5} />
               </a>
             ))}
           </div>
+        </div>
+        <div className="md:col-span-3 md:col-start-7">
+          <div className="text-[9px] uppercase tracking-[0.4em] text-gold mb-6">Navigate</div>
+          <ul className="space-y-3">
+            {[["About", "#about"], ["Services", "#services"], ["Gallery", "#gallery"], ["Locations", "#locations"], ["Contact", "#contact"]].map(([l, h]) => (
+              <li key={h}>
+                <a href={h} className="text-sm text-ivory/60 hover:text-gold transition-colors duration-300 flex items-center gap-2 group">
+                  <span className="inline-block h-px w-0 bg-gold transition-all duration-300 group-hover:w-4" />
+                  {l}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="md:col-span-3">
+          <div className="text-[9px] uppercase tracking-[0.4em] text-gold mb-6">Get In Touch</div>
+          <ul className="space-y-4 text-sm text-ivory/60">
+            <li className="flex items-start gap-2">
+              <MapPin className="w-3.5 h-3.5 text-gold mt-0.5 shrink-0" strokeWidth={1.5} />
+              <span>Maadi · Mamsha Ahl Misr, Cairo</span>
+            </li>
+            <li className="flex items-center gap-2">
+              <Phone className="w-3.5 h-3.5 text-gold shrink-0" strokeWidth={1.5} />
+              <a href="tel:+201155003537" className="hover:text-gold transition-colors duration-300">01155003537</a>
+            </li>
+            <li className="flex items-center gap-2">
+              <Mail className="w-3.5 h-3.5 text-gold shrink-0" strokeWidth={1.5} />
+              <a href="mailto:hello@kmbmarine.com" className="hover:text-gold transition-colors duration-300">hello@kmbmarine.com</a>
+            </li>
+          </ul>
+          <a href="https://wa.me/201155003537" className="mt-8 inline-flex items-center gap-2.5 rounded-full border border-gold/30 px-5 py-2.5 text-[10px] uppercase tracking-[0.3em] text-gold hover:bg-gold hover:text-navy-deep font-semibold transition-all duration-300">
+            <MessageCircle className="w-3.5 h-3.5" /> WhatsApp Us
+          </a>
         </div>
       </div>
       <div className="border-t border-ivory/5">
@@ -600,7 +714,7 @@ function Home() {
       <Nav />
       <Hero />
       <About />
-      <Experiences />
+      <Services />
       <VideoShowcase />
       <Gallery />
       <WhyChoose />
