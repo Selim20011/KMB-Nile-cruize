@@ -319,13 +319,16 @@ function VideoShowcase() {
             </Reveal>
           </div>
           <Reveal delay={0.2}>
-            <div className="flex gap-2">
+            <div className="flex gap-2 items-center">
               {videos.map((_, i) => (
                 <button
-                  key={i} onClick={() => setActive(i)}
-                  className={`h-px transition-all duration-500 ${active === i ? "w-16 bg-gold" : "w-8 bg-ivory/20"}`}
+                  key={i}
+                  onClick={() => setActive(i)}
                   aria-label={`Video ${i + 1}`}
-                />
+                  className="flex items-center justify-center h-11 px-1"
+                >
+                  <span className={`block h-px transition-all duration-500 ${active === i ? "w-16 bg-gold" : "w-8 bg-ivory/20"}`} />
+                </button>
               ))}
             </div>
           </Reveal>
@@ -353,7 +356,13 @@ function VideoShowcase() {
               key={i} onClick={() => setActive(i)}
               className={`group relative aspect-video overflow-hidden rounded-sm transition-all ${active === i ? "ring-1 ring-gold" : "opacity-50 hover:opacity-100"}`}
             >
-              <video muted loop playsInline preload="metadata" className="h-full w-full object-cover" onMouseEnter={e => e.currentTarget.play()} onMouseLeave={e => e.currentTarget.pause()}>
+              <video
+                muted loop playsInline preload="metadata"
+                poster={birthday}
+                className="h-full w-full object-cover"
+                onMouseEnter={e => e.currentTarget.play()}
+                onMouseLeave={e => e.currentTarget.pause()}
+              >
                 <source src={`${src}#t=0.001`} type="video/mp4" />
               </video>
             </button>
@@ -400,9 +409,11 @@ function Gallery() {
                 ) : (
                   <video
                     muted loop playsInline preload="metadata"
+                    poster={birthday}
                     className="h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-110"
                     onMouseEnter={e => e.currentTarget.play()}
                     onMouseLeave={e => { e.currentTarget.pause(); e.currentTarget.currentTime = 0; }}
+                    onTouchStart={e => e.currentTarget.play()}
                   >
                     <source src={`${it.src}#t=0.001`} type="video/mp4" />
                   </video>
